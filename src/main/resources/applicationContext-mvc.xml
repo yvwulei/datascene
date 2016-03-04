@@ -11,9 +11,9 @@
         http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
     <!-- 启动对@Aspectj的支持 -->
     <aop:aspectj-autoproxy proxy-target-class="true" />
-    <context:component-scan base-package="com.zhongtian.datascene">
+<!--     <context:component-scan base-package="com.zhongtian.datascene">
 	    <context:include-filter type="regex" expression="..controller.*"/>
-	</context:component-scan>
+	</context:component-scan> -->
     <mvc:annotation-driven/>
     <!-- 配置hibernateValidator开始 -->
     <!-- 默认的注解映射的支持 -->  
@@ -24,6 +24,7 @@
         <!--不设置则默认为classpath下的ValidationMessages.properties -->
         <property name="validationMessageSource" ref="validateMessageSource"/>
     </bean>
+    
     <bean id="validateMessageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">  
         <property name="basenames">  
             <list>  
@@ -36,6 +37,15 @@
         <property name="fileEncodings" value="utf-8"/>  
         <property name="cacheSeconds" value="120"/>  
 	</bean> 
+	
+	<mvc:interceptors>
+        <bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor"/>
+    </mvc:interceptors>
+
+    <bean id="localeResolver" class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
+        <property name="defaultLocale" value="zh_CN"/>
+    </bean>
+    
     <!-- 配置hibernateValidator结束 -->   
     <!-- 系统异常统一处理开始 -->   
 	<bean id="exceptionResolver" class="com.zhongtian.datascene.common.exception.resolver.CustomSimpleMappingExceptionResolver">  
