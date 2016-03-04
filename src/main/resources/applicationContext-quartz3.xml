@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
+    
+     <!-- quartz-2.x的集群环境配置 -->
+     <!-- 启动触发器的配置开始 -->
+     <bean name="quartzScheduler"  
+        class="org.springframework.scheduling.quartz.SchedulerFactoryBean">  
+        <property name="dataSource">  
+            <ref bean="dataSource" />  
+        </property>
+        <property name="applicationContextSchedulerContextKey" value="applicationContextKey" />  
+        <property name="configLocation" value="classpath:quartz.properties" />          
+        <property name="triggers">  
+            <list>  
+                <ref bean="myJobTrigger" />  
+            </list>  
+        </property>  
+    </bean>
+    <!-- 启动触发器的配置结束 -->
+ 
+    <!-- quartz-2.x的单机环境配置 -->
+    <bean id="myJobTrigger"
+        class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail">
+            <ref bean="myJobDetail" />
+        </property>
+        <property name="cronExpression">
+            <!--middle night 24. do it  -->
+            <value>*/5 * * * * ?</value>
+        </property>
+    </bean>
+    <!-- 调度的配置结束 -->
+ 
+    <!-- job的配置开始 -->
+    <bean id="myJobDetail"
+        class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+        <property name="jobClass">  
+            <value>com.zhongtian.datascene.quartz.job.MyQuartzJobBean</value>  
+        </property>     
+        <property name="durability" value="true" />     
+        <property name="requestsRecovery" value="true" />
+    </bean>
+    <!-- job的配置结束 -->
+ 
+</beans>

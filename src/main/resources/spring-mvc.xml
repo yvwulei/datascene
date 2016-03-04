@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context" xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-4.0.xsd
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
+    <!-- 启动对@Aspectj的支持 -->
+    <aop:aspectj-autoproxy proxy-target-class="true" />
+    <context:component-scan base-package="com.zhongtian.datascene">
+	    <context:include-filter type="regex" expression="..controller.*"/>
+	</context:component-scan>
+    <mvc:annotation-driven/>
+    <!-- 配置hibernateValidator开始 -->
+    <!-- 默认的注解映射的支持 -->  
+    <mvc:annotation-driven validator="validator" conversion-service="conversion-service" />
+    <bean id="conversion-service" class="org.springframework.format.support.FormattingConversionServiceFactoryBean" />
+    <bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
+        <property name="providerClass"  value="org.hibernate.validator.HibernateValidator"/>
+        <!--不设置则默认为classpath下的ValidationMessages.properties -->
+        <property name="validationMessageSource" ref="validateMessageSource"/>
+    </bean>
+    <bean id="validateMessageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">  
+        <property name="basenames">  
+            <list>  
+                <!-- 在web环境中一定要定位到classpath 否则默认到当前web应用下找  -->  
+                <value>classpath:validatemessages</value>  
+                <value>classpath:org/hibernate/validator/ValidationMessages</value>  
+            </list>  
+        </property>   
+        <property name="useCodeAsDefaultMessage" value="false"/>
+        <property name="fileEncodings" value="utf-8"/>  
+        <property name="cacheSeconds" value="120"/>  
+	</bean> 
+    <!-- 配置hibernateValidator结束 -->   
+    <!-- 系统异常统一处理开始 -->   
+	<bean id="exceptionResolver" class="com.zhongtian.datascene.common.exception.resolver.CustomSimpleMappingExceptionResolver">  
+      <property name="exceptionMappings">   
+        <props>   
+          <prop key="com.zhongtian.datascene.basic.excepiton.AuthException">error/500</prop>  
+          <prop key="com.zhongtian.datascene.basic.excepiton.SysException">error/500</prop>   
+          <prop key="java.lang.exception">error/500</prop>  
+            
+       </props>   
+     </property>   
+    </bean>    
+    <!-- 系统异常统一处理结束 --> 
+    <!-- 配置授权认证开始 -->
+    <!-- 配置自定义过滤 -->
+   <!--  <mvc:interceptors>   
+	  <mvc:interceptor>   
+	  	如果不定义 mvc:mapping path 将拦截所有的URL请求
+	    <mvc:mapping path="/*"/> 管理员登录拦截  
+	    <mvc:exclude-mapping path="/user/login"/>  
+	    <mvc:exclude-mapping path="/user/register"/> 
+	    <bean class="com.zhongtian.datascene.auth.web.interceptor.AuthInterceptor"></bean>   
+	  </mvc:interceptor>   
+	</mvc:interceptors> -->     
+    <!-- 配置授权认证开始 -->
+    
+	<!-- 如果当前请求为“/”时，则转发到“/home/index” 配置单独的homeController处理此请求-->
+    <!-- <mvc:view-controller path="/" view-name="forward:/user/login"/> -->
+    <!-- 如果当前请求为“/”时，则转发到“home/index” 非重定向跳转到home页配置--> 
+    <!-- <mvc:view-controller path="/" view-name="home/index"/> -->
+    <!-- 静态资源映射 -->
+    <!-- <mvc:resources mapping="/static/**" location="/static/" /> -->
+    <!-- 对静态资源文件的访问，交给default servlet handler处理 -->  
+    <mvc:default-servlet-handler/>
+    
+	<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+        <property name="messageConverters">
+            <list>
+                <bean class="org.springframework.http.converter.StringHttpMessageConverter">
+                    <property name="supportedMediaTypes">
+                        <list>
+                            <value>text/plain;charset=UTF-8</value>
+                        </list>
+                    </property>
+                </bean>
+                <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+                    <property name="supportedMediaTypes">
+                        <list>
+                            <value>text/plain;charset=UTF-8</value>
+                            <value>application/json;charset=UTF-8</value>
+                        </list>
+                    </property>
+                </bean>
+            </list>
+        </property>
+    </bean>
+    
+    <!-- 定义跳转的文件的前后缀 ，视图模式配置-->  
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">  
+        <!-- 这里的配置我的理解是自动给后面action的方法return的字符串加上前缀和后缀，变成一个 可用的url地址 -->  
+        <property name="prefix" value="/views/" />  
+        <property name="suffix" value=".jsp" />  
+    </bean>  
+      
+    <!-- 配置文件上传，如果没有使用文件上传可以不用配置，当然如果不配，那么配置文件中也不必引入上传组件包 -->  
+    <bean id="multipartResolver"    
+        class="org.springframework.web.multipart.commons.CommonsMultipartResolver">    
+        <!-- 默认编码 -->  
+        <property name="defaultEncoding" value="utf-8" />    
+        <!-- 文件大小最大值 -->  
+        <property name="maxUploadSize" value="10485760000" />    
+        <!-- 内存中的最大值 -->  
+        <property name="maxInMemorySize" value="40960" />    
+    </bean>   
+  
+</beans> 
