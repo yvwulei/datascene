@@ -58,11 +58,18 @@ public class UserServiceImpl implements IUserService {
 	public UserEntity findUser(String username, String password) {
 		try {
 			String encStr = EncryptionUtil.md5(username+password);
-			return userDao.findUser(username, encStr);
+			UserEntity user = userDao.findUser(username, encStr);
+			return user;
 		} catch (NoSuchAlgorithmException e) {
 			e.printStackTrace();
 			throw new SysException(e);
 		}
+	}
+
+	@Override
+	public UserEntity findUser(String username) {
+		UserEntity userEntity = userDao.findUser(username);
+		return userEntity;
 	}
 
 }

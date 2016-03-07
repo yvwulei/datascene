@@ -4,9 +4,9 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>NotFound!</title>
+<title>NotFound403!</title>
 </head>
 <body>
-	NotFound!
+	NotFound403!
 </body>
 </html>

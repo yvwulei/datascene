@@ -176,20 +176,26 @@
 	    <groupId>org.hibernate</groupId>
 	    <artifactId>hibernate-validator</artifactId>
 	    <version>5.2.2.Final</version>
+      </dependency>
+      
+      <!-- <dependency>
+	    <groupId>org.hibernate</groupId>
+	    <artifactId>hibernate-validator</artifactId>
+	    <version>5.2.2.Final</version>
           <exclusions>  
 	        <exclusion>  
 	            <groupId>javax.validation</groupId>
 	            <artifactId>validation-api</artifactId>  
 	        </exclusion>  
 	    </exclusions> 
-      </dependency>
+      </dependency> -->
 
-	  <dependency>
+<!-- 	  <dependency>
          <groupId>javax.validation</groupId>
          <artifactId>validation-api</artifactId>
          <version>1.0.0.GA</version>
          <scope>provided</scope>
-      </dependency>
+      </dependency> -->
    
       <!--enable hibernate to use its proxy model-->
       <dependency>
@@ -431,11 +437,11 @@
                 <skipTests>${skipTests}</skipTests>
             </configuration>
         </plugin>
-		<plugin>
+		<!-- <plugin>
 			<groupId>org.eclipse.jetty</groupId>
 			<artifactId>jetty-maven-plugin</artifactId>
 			<version>9.2.14.v20151106</version>
-			<!-- <version>8.1.16.v20140903</version> -->
+			<version>8.1.16.v20140903</version>
 			<configuration>
 				<scanIntervalSeconds>10</scanIntervalSeconds>
 				<webApp>
@@ -448,7 +454,7 @@
 					</connector>
 				</connectors>
 			</configuration>
-		</plugin>
+		</plugin> -->
        </plugins>
     <finalName>datascene</finalName>
   </build>

@@ -26,4 +26,12 @@ public interface IUserService {
 	  * @return
 	  */
 	 public UserEntity findUser(String username, String password);
+	 
+	 
+	 /**
+	  * 通过用户名查找用户
+	  * @param username
+	  * @return
+	  */
+	 public UserEntity findUser(String username);
 }

@@ -1,17 +1,16 @@
 package com.zhongtian.datascene.auth.service.impl;
 
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Resource;
-import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
 
 import com.zhongtian.datascene.auth.dao.IAclDao;
 import com.zhongtian.datascene.auth.service.IAclService;
 import com.zhongtian.datascene.auth.vo.AclEntity;
-import com.zhongtian.datascene.auth.vo.*;
+import com.zhongtian.datascene.auth.vo.RoleEntity;
+import com.zhongtian.datascene.auth.vo.UserEntity;
 
 @Service("aclService")
 public class AclServiceImpl implements IAclService {
@@ -38,33 +37,6 @@ public class AclServiceImpl implements IAclService {
 		return aclDao.loadAcl(userId, UserEntity.PRINCIPAL_TYPE, rid, rtype);
 	}
 
-	@Override
-	public List<Integer> listRoleOperIdsByRes(Integer rid, String rtype,
-			Integer roleId) {
-		return aclDao.listRoleOperIdsByRes(rid, rtype, roleId);
-	}
-
-	@Override
-	public List<Integer> listUserOperIdsByRes(Integer rid, String rtype,
-			Integer userId) {
-		return aclDao.listUserOperIdsByRes(rid, rtype, userId);
-	}
-
-	@Override
-	public List<Integer> listUserSelfOperIdsByRes(Integer rid, String rtype,
-			Integer userId) {
-		return aclDao.listUserSelfOperIdsByRes(rid, rtype, userId);
-	}
-
-	@Override
-	public Map<String, List<String>> listAllControllerResAndOperByRole(Integer roleId) {
-		return aclDao.listAllResAndOperByRole(roleId, ControllerResEntity.RES_TYPE);
-	}
-
-	@Override
-	public Map<String, List<String>> listAllControllerResAndOperByUser(Integer userId) {
-		return aclDao.listAllResAndOperByUser(userId, ControllerResEntity.RES_TYPE);
-	}
 
 	@Override
 	public List<String> listMenuSnByRole(Integer roleId) {
@@ -86,9 +58,5 @@ public class AclServiceImpl implements IAclService {
 		return aclDao.listMenuIdByUser(userId);
 	}
 
-	@Override
-	public List<Integer> listMenuIdByUserSelf(Integer userId) {
-		return aclDao.listMenuIdByUserSelf(userId);
-	}
 
 }

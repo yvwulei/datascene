@@ -7,6 +7,6 @@
 <title>NotFound!</title>
 </head>
 <body>
-	NotFound!
+	NotFound405!
 </body>
 </html>

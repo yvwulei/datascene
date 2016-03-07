@@ -11,14 +11,52 @@
         http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
     <!-- 启动对@Aspectj的支持 -->
     <aop:aspectj-autoproxy proxy-target-class="true" />
-<!--     <context:component-scan base-package="com.zhongtian.datascene">
-	    <context:include-filter type="regex" expression="..controller.*"/>
-	</context:component-scan> -->
+	
+	 <!-- 
+    	该标签隐式的向Spring容器注册了：
+		AutowiredAnnotationBeanPostProcessor   CommondAnnotationBeanPostProcessor
+		PersistenceAnnotationBeanPostProcessor   RequiredAnnotationBeanPostProcessor这四个BeanPostProcessor.
+    -->
+    <!-- <context:annotation-config /> -->
+    
+    <!-- 
+    	自动扫描该包，使SpringMVC认为包下注解的类
+    	它背后注册了很多用于解析注解的处理器,其中就包括<context:annotation-config/>配置的注解所使用的处理器
+              所以配置了<context:component-scan base-package="">之后,便无需再配置<context:annotation-config> 
+		<context:component-scan/> 扫描指定的包中的类上的注解，常用的注解有：
+			@Controller 声明Action组件
+			@Service    声明Service组件    @Service("myMovieLister") 
+			@Repository 声明Dao组件
+			@Component   泛指组件, 当不好归类时. 
+			@RequestMapping("/menu")  请求映射
+			@Resource  用于注入，( j2ee提供的 ) 默认按名称装配，@Resource(name="beanName") 
+			@Autowired 用于注入，(srping提供的) 默认按类型装配 
+			@Transactional( rollbackFor={Exception.class}) 事务管理
+			@ResponseBody
+			@Scope("prototype")   设定bean的作用域
+     -->
+    <context:component-scan base-package="com.zhongtian.datascene.**.controller" use-default-filters="false">
+    	<context:include-filter type="annotation"
+                                expression="org.springframework.stereotype.Controller"/>
+    </context:component-scan>
+    
+	<!-- 
+		<mvc:annotation-driven /> 是一种简写形式，完全可以手动配置替代这种简写形式，
+		简写形式可以让初学都快速应用默认配置方案。<mvc:annotation-driven /> 
+		会自动注册DefaultAnnotationHandlerMapping与AnnotationMethodHandlerAdapter 两个bean,
+		是spring MVC为@Controllers分发请求所必须的。并提供了：数据绑定支持，@NumberFormatannotation支持，
+		@DateTimeFormat支持，@Valid支持，读写XML的支持（JAXB），读写JSON的支持（Jackson）。
+		
+		启用SpringMVC的注解功能,它会自动注册HandlerMapping、HandlerAdapter、ExceptionResolver的相关实例 
+	 -->
     <mvc:annotation-driven/>
+    
     <!-- 配置hibernateValidator开始 -->
     <!-- 默认的注解映射的支持 -->  
     <mvc:annotation-driven validator="validator" conversion-service="conversion-service" />
+    
     <bean id="conversion-service" class="org.springframework.format.support.FormattingConversionServiceFactoryBean" />
+    
     <bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean">
         <property name="providerClass"  value="org.hibernate.validator.HibernateValidator"/>
         <!--不设置则默认为classpath下的ValidationMessages.properties -->
@@ -38,6 +76,7 @@
         <property name="cacheSeconds" value="120"/>  
 	</bean> 
 	
+	<!-- 配置国际化 -->
 	<mvc:interceptors>
         <bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor"/>
     </mvc:interceptors>
@@ -47,17 +86,32 @@
     </bean>
     
     <!-- 配置hibernateValidator结束 -->   
-    <!-- 系统异常统一处理开始 -->   
-	<bean id="exceptionResolver" class="com.zhongtian.datascene.common.exception.resolver.CustomSimpleMappingExceptionResolver">  
+    
+    <!-- 系统异常统一处理开始 --> 
+    
+    
+    <!-- SpringMVC在超出上传文件限制时，会抛出org.springframework.web.multipart.MaxUploadSizeExceededException -->  
+    <!-- 该异常是SpringMVC在检查上传的文件信息时抛出来的，而且此时还没有进入到Controller方法中 -->  
+    <bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">  
+        <property name="exceptionMappings">  
+            <props>  
+                <!-- 遇到MaxUploadSizeExceededException异常时，自动跳转到/WEB-INF/error_fileupload.jsp页面 -->  
+                <prop key="org.springframework.web.multipart.MaxUploadSizeExceededException">WEB-INF/error_fileupload</prop>  
+                <!-- 处理其它异常(包括Controller抛出的) -->  
+                <prop key="java.lang.Throwable">WEB-INF/500</prop>  
+            </props>  
+        </property>  
+    </bean>  
+   
+	<!-- <bean id="exceptionResolver" class="com.zhongtian.datascene.common.exception.resolver.CustomSimpleMappingExceptionResolver">  
       <property name="exceptionMappings">   
         <props>   
           <prop key="com.zhongtian.datascene.basic.excepiton.AuthException">error/500</prop>  
           <prop key="com.zhongtian.datascene.basic.excepiton.SysException">error/500</prop>   
           <prop key="java.lang.exception">error/500</prop>  
-            
        </props>   
      </property>   
-    </bean>    
+    </bean>  -->   
     <!-- 系统异常统一处理结束 --> 
     <!-- 配置授权认证开始 -->
     <!-- 配置自定义过滤 -->

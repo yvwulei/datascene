@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.annotation.Resource;
 import javax.inject.Inject;
 
 import org.apache.commons.logging.Log;
@@ -31,6 +32,7 @@ public class BaseDaoHibernateImpl<T> implements IBaseDao<T> {
 
 	protected static final Log logger = LogFactory.getLog(BaseDaoHibernateImpl.class);
 
+	@Resource
 	private SessionFactory sessionFactory;
 	/**
 	 * 创建一个Class的对象来获取泛型的class
@@ -56,7 +58,7 @@ public class BaseDaoHibernateImpl<T> implements IBaseDao<T> {
 		return sessionFactory;
 	}
 	
-	@Inject
+	@Resource
 	public void setSessionFactory(SessionFactory sessionFactory) {
 		this.sessionFactory = sessionFactory;
 	}
@@ -147,12 +149,17 @@ public class BaseDaoHibernateImpl<T> implements IBaseDao<T> {
 	@SuppressWarnings({ "hiding", "unchecked", "rawtypes" })
 	@Override
 	public <T> T findObject(String hql, Object ...args) {
-		Query query = getSession().createQuery(hql);
-		setArgs(query, args);
-		List list = query.setMaxResults(1).list();
-        if (list.isEmpty())
-            return null;
-        return ((T) list.get(0));
+		try{
+			Query query = getSession().createQuery(hql);
+			setArgs(query, args);
+			List list = query.setMaxResults(1).list();
+	        if (list.isEmpty())
+	            return null;
+	        return ((T) list.get(0));
+		}catch(Exception e){
+			logger.error(e);
+		}
+		return null;
 	}
 	
 	@SuppressWarnings({ "rawtypes", "unchecked" })

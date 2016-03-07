@@ -11,32 +11,13 @@
 		http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache-4.2.xsd
 		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd">
-    <!-- 
-    	该标签隐式的向Spring容器注册了：
-		AutowiredAnnotationBeanPostProcessor   CommondAnnotationBeanPostProcessor
-		PersistenceAnnotationBeanPostProcessor   RequiredAnnotationBeanPostProcessor这四个BeanPostProcessor.
-    -->
-    <context:annotation-config />
-    
-    <!-- 
-    	自动扫描该包，使SpringMVC认为包下注解的类
-		<context:component-scan/> 扫描指定的包中的类上的注解，常用的注解有：
-			@Controller 声明Action组件
-			@Service    声明Service组件    @Service("myMovieLister") 
-			@Repository 声明Dao组件
-			@Component   泛指组件, 当不好归类时. 
-			@RequestMapping("/menu")  请求映射
-			@Resource  用于注入，( j2ee提供的 ) 默认按名称装配，@Resource(name="beanName") 
-			@Autowired 用于注入，(srping提供的) 默认按类型装配 
-			@Transactional( rollbackFor={Exception.class}) 事务管理
-			@ResponseBody
-			@Scope("prototype")   设定bean的作用域
-     -->
-    <context:component-scan base-package="com.zhongtian.datascene"/>
-    
+	<context:component-scan base-package="com.zhongtian.datascene">
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+	</context:component-scan>
+	
 	<!-- 读取mysql jdbc的配置-->
     <context:property-placeholder location="classpath:jdbc.properties" ignore-unresolvable="true"/>
-     <!-- 配置数据源，从上面配置文件读取-->
+    <!-- 配置数据源，从上面配置文件读取-->
     <bean id="dataSource"
           class="com.mchange.v2.c3p0.ComboPooledDataSource">
         <property name="driverClass" value="${database.driverClassName}"/>
@@ -57,7 +38,7 @@
         <!-- spring中配置了自动扫描model层包的hibernate映射 -->
         <property name="packagesToScan">
 	        <list>
-	            <value>com.zhongtian.datascene..*.model</value>
+	            <value>com.zhongtian.datascene</value>
 	        </list>
 	    </property>
         <property name="hibernateProperties">

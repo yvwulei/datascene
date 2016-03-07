@@ -1,8 +1,5 @@
 package com.zhongtian.datascene.auth.dao.impl;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.springframework.stereotype.Service;
 
 import com.zhongtian.datascene.auth.dao.IUserDao;
@@ -15,7 +12,13 @@ public class UserDaoImpl extends BaseDaoHibernateImpl<UserEntity> implements IUs
 	@Override
 	public UserEntity findUser(String username, String password) {
 		String hql = "select u from UserEntity u where u.username=? and u.password=?";
-		return super.findObject(hql, username,password);
+		return findObject(hql, username,password);
+	}
+
+	@Override
+	public UserEntity findUser(String username) {
+		String hql = "select u from UserEntity u where u.username=? ";
+		return findObject(hql, username);
 	}
 
 }

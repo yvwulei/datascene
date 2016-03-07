@@ -8,4 +8,5 @@ import com.zhongtian.datascene.basic.dao.IBaseDao;
 public interface IRoleDao extends IBaseDao<RoleEntity> {
 	public List<RoleEntity> listRole();
 	public void deleteRoleUsers(int rid);
+	
 }

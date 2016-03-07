@@ -17,74 +17,11 @@ import com.zhongtian.datascene.basic.excepiton.SysException;
 @Table(name="t_acl")
 public class AclEntity {
 	private int id;
-	private String stype;
-	private String rtype;
 	private int sid;
+	private String stype;
 	private int rid;
+	private String rtype;
 	private int aclState;
-	
-	public void setMenuType() {
-		this.rtype = MenuResEntity.RES_TYPE;
-	}
-	
-	public void setControllerType() {
-		this.rtype = ControllerResEntity.RES_TYPE;
-	}
-	
-	public void setUserType() {
-		this.stype = UserEntity.PRINCIPAL_TYPE;
-	}
-	
-	public void setRoleType() {
-		this.stype = RoleEntity.PRINCIPAL_TYPE;
-	}
-	
-	/**
-	 * 设置权限，在某个位置设置访问或者无法访问
-	 * @param index
-	 * @param permit
-	 */
-	public void setPermission(int index,boolean permit) {
-		if(index<0||index>31) throw new SysException("权限的位置只能在0-31之间");
-		this.aclState = setBit(this.aclState,index,permit);
-	}
-	/**
-	 * 具体进行设置
-	 * @param state
-	 * @param index
-	 * @param permit
-	 */
-	public int setBit(int state,int index,boolean permit) {
-		int tmp = 1;
-		tmp = tmp<<index;
-		if(permit) {
-			state = state|tmp;
-		} else {
-			tmp = ~tmp;
-			state = state&tmp;
-		}
-		return state;
-	}
-	
-	/**
-	 * 检查在某个位置是否可以访问
-	 * @param index
-	 * @return
-	 */
-	public boolean checkPermission(int index) {
-		int tmp = 1;
-		tmp = tmp<<index;
-		int num = this.aclState&tmp;
-		return num>0;
-	}
-	
-	public static boolean checkPermission(int index,int aclState) {
-		int tmp = 1;
-		tmp = tmp<<index;
-		int num = aclState&tmp;
-		return num>0;
-	}
-	
 	
 	@Id
 	@GeneratedValue
@@ -134,12 +71,7 @@ public class AclEntity {
 	public void setRid(int rid) {
 		this.rid = rid;
 	}
-	/**
-	 * 对方法的操作状态，存储的是一个4个字节的整数，其实就可以存储0-31位的操作
-	 * 000000....1011-->可以进行CREATE,READ,DELETE,无法进行UPDATE
-	 * 数据库中存储的值是11
-	 * @return
-	 */
+	
 	@Column(name="acl_state")
 	public int getAclState() {
 		return aclState;
