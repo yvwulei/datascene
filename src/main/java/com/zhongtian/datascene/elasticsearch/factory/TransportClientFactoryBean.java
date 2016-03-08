@@ -8,10 +8,12 @@ import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
 import org.springframework.beans.factory.DisposableBean;
-import org.springframework.beans.factory.FactoryBean;
+import org.springframework.beans.factory.SmartFactoryBean;
+import org.springframework.util.StringUtils;
 
-public class TransportClientFactoryBean implements FactoryBean<TransportClient> ,DisposableBean  {
+public class TransportClientFactoryBean implements SmartFactoryBean<TransportClient> ,DisposableBean  {
 	protected static final Log logger = LogFactory.getLog(TransportClientFactoryBean.class);
+	private static final String INIT_PARAM_DELIMITERS = ",; \t\n";
 	private String clusterName;
 	private String clusterNodes;
 	private Boolean sniff = Boolean.TRUE;
@@ -35,7 +37,7 @@ public class TransportClientFactoryBean implements FactoryBean<TransportClient> 
     			.put("client.transport.sniff", this.sniff)
     	        .put("cluster.name", this.clusterName).build();
 		TransportClient client = TransportClient.builder().settings(settings).build();
-		String[] array = this.clusterNodes.split(",");
+		String[] array = StringUtils.tokenizeToStringArray(this.clusterNodes, INIT_PARAM_DELIMITERS);
 		for(String str :array){
 			String[] nodeInfo = str.split(":");
 			String ip = nodeInfo[0];
@@ -65,6 +67,16 @@ public class TransportClientFactoryBean implements FactoryBean<TransportClient> 
 			this.client = null;
 		}
 		logger.debug("TransportClient close end...");
+	}
+
+	@Override
+	public boolean isEagerInit() {
+		return false;
+	}
+
+	@Override
+	public boolean isPrototype() {
+		return false;
 	}
 
 }
