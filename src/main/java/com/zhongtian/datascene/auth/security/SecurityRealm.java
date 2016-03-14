@@ -1,4 +1,4 @@
-package com.zhongtian.datascene.auth.web.security;
+package com.zhongtian.datascene.auth.security;
 
 import java.util.List;
 

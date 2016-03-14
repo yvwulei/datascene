@@ -11,17 +11,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.zhongtian.datascene.auth.annotation.AuthOper;
 import com.zhongtian.datascene.auth.annotation.ModelMenu;
 import com.zhongtian.datascene.auth.annotation.NavMenu;
-import com.zhongtian.datascene.auth.annotation.Res;
 import com.zhongtian.datascene.auth.vo.AuthFinalVal;
 import com.zhongtian.datascene.auth.web.model.RoleBindModel;
 import com.zhongtian.datascene.auth.web.model.RoleEditModel;
 import com.zhongtian.datascene.auth.web.model.RoleSearchModel;
 
-@NavMenu(name="角色管理1",href="/list",orderNum=1,psn="auth_root",icon="icon-book")
-@Res(name="角色管理",orderNum=1,psn="auth_root",sn="role")
+@NavMenu(name="角色管理",href="/list",orderNum=1,psn="auth_root",icon="icon-book")
 @Controller
 @RequestMapping(value = "admin/role")
 public class RoleController {  
@@ -40,7 +37,6 @@ public class RoleController {
     }
 	
 	@ModelMenu(menuPos=AuthFinalVal.MENU_MODEL_OPER)
-	@AuthOper
 	@RequestMapping(value = "/add", method = {RequestMethod.GET})
 	public String add(HttpServletRequest request, Model model){	
 		/*if(!model.containsAttribute("contentModel"))
@@ -51,7 +47,6 @@ public class RoleController {
         return "role/edit";	  
 	}
 	
-	@AuthOper
 	@RequestMapping(value = "/add", method = {RequestMethod.POST})
     public String add(HttpServletRequest request, Model model, @Valid @ModelAttribute("contentModel") RoleEditModel editModel, BindingResult result) {
         /*if(result.hasErrors())

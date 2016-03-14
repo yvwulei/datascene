@@ -210,13 +210,19 @@
             <artifactId>mysql-connector-java</artifactId>  
             <version>5.1.30</version>  
         </dependency>  
-        
-        <!-- c3p0 datasource -->
+        <!-- druid datasource -->
         <dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>druid</artifactId>
+			<version>1.0.18</version>
+		</dependency>
+		        
+        <!-- c3p0 datasource -->
+        <!-- <dependency>
             <groupId>c3p0</groupId>
             <artifactId>c3p0</artifactId>
             <version>0.9.1.2</version>
-        </dependency>
+        </dependency> -->
         <!-- 导入dbcp的jar包，用来在applicationContext.xml中配置数据库 -->  
      <!--    <dependency>  
             <groupId>commons-dbcp</groupId>  
@@ -411,6 +417,23 @@
             <artifactId>quartz</artifactId>
             <version>${quartz.version}</version>
         </dependency>
+        
+        <!-- mina -->
+        <dependency>
+		  <groupId>org.apache.mina</groupId>
+		  <artifactId>mina-core</artifactId>
+		  <version>2.0.9</version>
+		</dependency>
+        <dependency>
+		  <groupId>org.apache.mina</groupId>
+		  <artifactId>mina-integration-spring</artifactId>
+		  <version>1.1.7</version>
+		</dependency>
+		<dependency>
+		  <groupId>org.apache.mina</groupId>
+		  <artifactId>mina-integration-beans</artifactId>
+		  <version>2.0.13</version>
+		</dependency>
  </dependencies>
  
   <build>

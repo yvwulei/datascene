@@ -25,12 +25,13 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.zhongtian.datascene.auth.annotation.AuthRequired;
+import com.zhongtian.datascene.auth.configuration.Configuration;
 import com.zhongtian.datascene.auth.service.IUserService;
 import com.zhongtian.datascene.auth.vo.UserEntity;
-import com.zhongtian.datascene.auth.web.interceptor.AuthInterceptor;
-import com.zhongtian.datascene.auth.web.model.UserRegisterModel;  
-  
+import com.zhongtian.datascene.auth.web.model.UserRegisterModel;
+import com.zhongtian.datascene.auth.web.viewvo.UserViewVO;
+
+	  
   
 @Controller  
 @RequestMapping("/user")  
@@ -40,19 +41,11 @@ public class UserController {
     @Resource(name="userService")  
     private IUserService userService;  
     
-    
-	@RequestMapping(value="/login", method = {RequestMethod.GET})
-	public String login(){
-		logger.info("login post excute...");
-		return "user/login";
-		
-	}
-	
-	@RequestMapping(value="/dologin", method = {RequestMethod.POST})
-    public String dologin(String username, String password){
+	@RequestMapping(value="/login", method = {RequestMethod.POST})
+    public String login(UserViewVO user){
 		logger.info("dologin post excute...");
-//		String username = request.getParameter("username");  
-//	    String password = request.getParameter("password");  
+		String username = user.getUsername();  
+	    String password = user.getPassword();  
 	    
 	    UsernamePasswordToken token = new UsernamePasswordToken(username, password);
 //	    token.setRememberMe(true);  
@@ -120,13 +113,14 @@ public class UserController {
     	return "redirect:"+returnUrl; 	
 	}
 	
-*/	@AuthRequired
+*/	
+
 	@RequestMapping(value = "/logout",method = RequestMethod.GET)  
     public String logout(HttpServletRequest request,HttpSession httpSession){ 
 		
-        UserEntity u = (UserEntity) httpSession.getAttribute(AuthInterceptor.userAuth); 
+        UserEntity u = (UserEntity) httpSession.getAttribute(Configuration.userAuth); 
         if(null != u){
-        	httpSession.removeAttribute(AuthInterceptor.userAuth);
+        	httpSession.removeAttribute(Configuration.userAuth);
         	httpSession.invalidate();
         }
         String returnUrl = ServletRequestUtils.getStringParameter(request, "returnUrl", null);
