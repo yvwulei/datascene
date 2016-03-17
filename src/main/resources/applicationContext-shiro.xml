@@ -7,19 +7,28 @@
 
     <description>apache shiro配置</description>
 
+	<bean id="resourceCheckFilter" class="com.zhongtian.datascene.auth.filter.ResourceCheckFilter"/>
+    
     <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
         <property name="securityManager" ref="securityManager"/>
-        <property name="loginUrl" value="/page/login"/>
-        <property name="successUrl" value="/page/index"/>
-        <property name="unauthorizedUrl" value="/page/401"/>
+        <property name="loginUrl" value="/login"/>
+        <!-- <property name="successUrl" value="/user/index"/> -->
+        <property name="unauthorizedUrl" value="/401"/>
+        <property name="filters">    
+           <map>    
+               <entry key="resourceCheck" value-ref="resourceCheckFilter"/>  
+           </map>    
+       </property> 
         <property name="filterChainDefinitions">
             <value>
                 <!-- 静态资源允许访问 -->
                 /static/** = anon
+                /views/** = anon
                 <!-- 登录页允许访问 -->
-                /user/login = anon
+                /login = anon
                 <!-- 其他资源需要认证 -->
                 /** = authc
+                <!-- /** = resourceCheck -->
             </value>
         </property>
     </bean>
@@ -37,8 +46,16 @@
         <property name="sessionDAO" ref="sessionDAO"/>
     </bean>
 
+
+	<bean id="hashMatcher" class="org.apache.shiro.authc.credential.HashedCredentialsMatcher">
+		<property name="hashAlgorithmName" value="md5"/>
+	</bean>
+
 	<!-- 继承自AuthorizingRealm的自定义Realm,即指定Shiro验证用户登录的类为自定义的SecurityRealm.java -->  
-    <bean id="securityRealm" class="com.zhongtian.datascene.auth.security.SecurityRealm"/>
+    <bean id="securityRealm" class="com.zhongtian.datascene.auth.realm.SecurityRealm">
+    	<property name="credentialsMatcher" ref="hashMatcher"/>
+    </bean>
+    
     
     <!-- 安全管理器 -->
     <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
@@ -48,11 +65,16 @@
             </list>
         </property>
         <!-- cacheManager,集合spring缓存工厂 -->
-        <!-- <property name="cacheManager" ref="shiroEhcacheManager" /> -->
-        <!-- <property name="sessionManager" ref="sessionManager" /> -->
+        <property name="cacheManager" ref="shiroEhcacheManager" />
+        <property name="sessionManager" ref="sessionManager" />
     </bean>
 
     <!-- Shiro生命周期处理器 -->
     <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
 
+	<bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator" depends-on="lifecycleBeanPostProcessor" />  
+	
+	<bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">  
+	  	<property name="securityManager" ref="securityManager"/>  
+	</bean>
 </beans>

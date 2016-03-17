@@ -72,4 +72,18 @@ public interface IAclService {
 	 */
 	public List<Integer> listMenuIdByUser(Integer userId);
 	
+	/**
+	 * 根据角色的id获取该角色所有的菜单的id
+	 * @param roleId
+	 * @return
+	 */
+	public List<Integer> listMenuHrefByRole(Integer roleId);
+	
+	/**
+	 * 根据用户的id获取该用户所有的菜单的id，先获取角色的数据，再获取用户独立的数据
+	 * @param roleId
+	 * @return
+	 */
+	public List<Integer> listMenuUrlByUser(Integer userId);
+	
 }

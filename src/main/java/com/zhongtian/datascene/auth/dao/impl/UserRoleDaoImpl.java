@@ -24,9 +24,4 @@ public class UserRoleDaoImpl extends BaseDaoHibernateImpl<UserRoleEntity> implem
 		this.updateByHql(hql, uid);
 	}
 	
-	@Override
-	public List<UserRoleEntity> listRoles(int userId) {
-		String hql = "from UserRoleEntity r where r.uid = ?";
-		return super.findList(hql, userId);
-	}
 }

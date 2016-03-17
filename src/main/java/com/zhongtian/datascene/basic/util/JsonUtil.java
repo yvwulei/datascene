@@ -2,10 +2,6 @@ package com.zhongtian.datascene.basic.util;
 
 import java.io.IOException;
 import java.io.StringWriter;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -42,7 +38,7 @@ public class JsonUtil {
 			jf = getFactory();
 			mapper = getMapper();
 			StringWriter out = new StringWriter();
-			jg = jf.createJsonGenerator(out);
+			jg = jf.createGenerator(out);
 			mapper.writeValue(jg, obj);
 			return out.toString();
 		} catch (IOException e) {

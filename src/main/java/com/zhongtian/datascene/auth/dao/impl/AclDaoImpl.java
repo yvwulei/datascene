@@ -68,5 +68,15 @@ public class AclDaoImpl extends BaseDaoHibernateImpl<AclEntity> implements IAclD
 		List<Integer> ids = super.findList(hql,sid,stype,MenuResEntity.RES_TYPE);
 		return ids;
 	}
+
+	@Override
+	public List<Integer> listMenuHrefByRole(Integer roleId) {
+		return null;
+	}
+
+	@Override
+	public List<Integer> listMenuHrefByUser(Integer userId) {
+		return null;
+	}
 	
 }

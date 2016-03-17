@@ -38,4 +38,17 @@ public interface IMenuResDao extends IBaseDao<MenuResEntity> {
 	public List<MenuResEntity> listByParent(Integer pid);
 	
 	public MenuResEntity loadBySn(String sn);
+	
+	/**
+	 * 根据角色ID获取所有的资源
+	 * 
+	 */
+	public List<MenuResEntity> listByRoleId(Integer rid);
+	
+	/**
+	 * 根据用户ID获取所有的资源
+	 * 
+	 */
+	public List<MenuResEntity> listByUserId(Integer uid);
+	
 }

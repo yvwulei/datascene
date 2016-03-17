@@ -1,5 +1,7 @@
 package com.zhongtian.datascene.auth.dao.impl;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.zhongtian.datascene.auth.dao.IUserDao;
@@ -19,6 +21,12 @@ public class UserDaoImpl extends BaseDaoHibernateImpl<UserEntity> implements IUs
 	public UserEntity findUser(String username) {
 		String hql = "select u from UserEntity u where u.username=? ";
 		return findObject(hql, username);
+	}
+
+	@Override
+	public List<UserEntity> findAllUsers() {
+		String hql = "select u from UserEntity u ";
+		return findList(hql);
 	}
 
 }

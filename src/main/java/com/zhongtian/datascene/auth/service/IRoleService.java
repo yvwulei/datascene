@@ -11,6 +11,6 @@ public interface IRoleService {
 	 * @param userId
 	 * @return
 	 */
-	public List<RoleEntity> selectRolesByUserId(int userId);
+	public List<RoleEntity> listRolesByUserId(int userId);
 
 }

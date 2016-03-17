@@ -11,12 +11,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <title>Insert title here</title>
 </head>
 <body>
-<form action="<%=basePath %>user/dologin" method="post">
+<form action="<%=basePath %>login" method="post">
 username:<input name="username"  type="text"/><br/>
 password:<input name="password" type="password"/><br/>
 <input type="submit" value="Submit" />
 </form>
-<jsp:forward page="/user/success"/>
-user/success
 </body>
 </html>

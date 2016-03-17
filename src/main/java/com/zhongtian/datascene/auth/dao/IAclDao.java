@@ -44,4 +44,18 @@ public interface IAclDao extends IBaseDao<AclEntity> {
 	 */
 	public List<Integer> listMenuIdByUser(Integer userId);
 	
+	/**
+	 * 根据角色的id获取该角色所以的菜单的href
+	 * @param roleId
+	 * @return
+	 */
+	public List<Integer> listMenuHrefByRole(Integer roleId);
+	
+	/**
+	 * 根据的id获取该角色所以的菜单的href
+	 * @param roleId
+	 * @return
+	 */
+	public List<Integer> listMenuHrefByUser(Integer userId);
+	
 }

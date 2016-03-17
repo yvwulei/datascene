@@ -58,5 +58,15 @@ public class AclServiceImpl implements IAclService {
 		return aclDao.listMenuIdByUser(userId);
 	}
 
+	@Override
+	public List<Integer> listMenuHrefByRole(Integer roleId) {
+		return null;
+	}
+
+	@Override
+	public List<Integer> listMenuUrlByUser(Integer userId) {
+		return null;
+	}
+
 
 }

@@ -35,4 +35,14 @@ public interface IMenuResService {
 	
 	public void addInitMenuResources(String[] packages);
 	
+	/**
+	 * 根据角色RoleId,获取菜单资源
+	 */
+	public List<MenuResEntity> listByRoleId(Integer rid);
+	
+	/**
+	 * 根据角色UserId,获取菜单资源
+	 */
+	public List<MenuResEntity> listByUserId(Integer uid);
+	
 }

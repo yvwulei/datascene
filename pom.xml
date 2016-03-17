@@ -33,7 +33,7 @@
       <!-- hibernate版本号 --> 
       <org.hibernate-version>4.3.11.Final</org.hibernate-version> 
       <!-- jackson版本号 -->  
-      <jackson.version>2.7.0</jackson.version> 
+      <jackson.version>2.6.5</jackson.version> 
       <!-- log4j日志文件管理包版本 -->  
       <slf4j.version>1.7.7</slf4j.version>  
       <log4j.version>1.2.17</log4j.version>
@@ -418,22 +418,6 @@
             <version>${quartz.version}</version>
         </dependency>
         
-        <!-- mina -->
-        <dependency>
-		  <groupId>org.apache.mina</groupId>
-		  <artifactId>mina-core</artifactId>
-		  <version>2.0.9</version>
-		</dependency>
-        <dependency>
-		  <groupId>org.apache.mina</groupId>
-		  <artifactId>mina-integration-spring</artifactId>
-		  <version>1.1.7</version>
-		</dependency>
-		<dependency>
-		  <groupId>org.apache.mina</groupId>
-		  <artifactId>mina-integration-beans</artifactId>
-		  <version>2.0.13</version>
-		</dependency>
  </dependencies>
  
   <build>

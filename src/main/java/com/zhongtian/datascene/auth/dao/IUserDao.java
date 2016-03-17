@@ -1,5 +1,7 @@
 package com.zhongtian.datascene.auth.dao;
 
+import java.util.List;
+
 import com.zhongtian.datascene.auth.vo.UserEntity;
 import com.zhongtian.datascene.basic.dao.IBaseDao;
 
@@ -21,4 +23,9 @@ public interface IUserDao extends IBaseDao<UserEntity> {
 	  */
 	 public UserEntity findUser(String username);
 
+	 /**
+	  * 查找所有用户
+	  * @return
+	  */
+	 public List<UserEntity> findAllUsers();
 }

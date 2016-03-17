@@ -109,20 +109,32 @@ public class MenuResDaoIpml extends BaseDaoHibernateImpl<MenuResEntity> implemen
 	public List<MenuResEntity> listByParent(Integer pid) {
 		String hql = null;
 		if(pid==null||pid==0)
-			hql = getSelectHql()+" from MenuResources m where m.parent is null and m.display=1 order by m.orderNum";
+			hql = getSelectHql()+" from MenuResEntity m where m.parent is null and m.display=1 order by m.orderNum";
 		else
-			hql = getSelectHql()+" from MenuResources m where m.display=1 and m.parent.id="+pid+" order by m.orderNum";
+			hql = getSelectHql()+" from MenuResEntity m where m.display=1 and m.parent.id="+pid+" order by m.orderNum";
 		return super.findList(hql);
 	}
 	
 	private String getSelectHql() {
-		return "select new MenuResources(m.id,m.name,m.sn,m.menuPos,m.href,m.icon,m.orderNum,m.psn,m.display)";
+		return "select new MenuResEntity(m.id,m.name,m.sn,m.menuPos,m.href,m.icon,m.orderNum,m.psn,m.display,m.orderNum,m.pid) ";
 	}
 
 	@Override
 	public MenuResEntity loadBySn(String sn) {
 		String hql = "from MenuResEntity mr where mr.sn=?";
 		return (MenuResEntity)this.findObject(hql, sn);
+	}
+
+	@Override
+	public List<MenuResEntity> listByRoleId(Integer rid) {
+		String hql  = " select mr from MenuResEntity mr ,AclEntity a where a.rtype='menu' and a.stype='role' and a.rid=mr.id and a.sid = ? ";
+		return super.findList(hql,rid);
+	}
+
+	@Override
+	public List<MenuResEntity> listByUserId(Integer uid) {
+		String hql  = "select mr from MenuResEntity mr ,AclEntity a ,UserRoleEntity ur where a.rtype='menu' and a.stype='role' and a.rid=mr.id and ur.rid=a.rid and a.uid = ? ";
+		return super.findList(hql,uid);
 	}
 
 }

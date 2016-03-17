@@ -12,7 +12,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="t_role")
-public class RoleEntity implements Principal{
+public class RoleEntity{
 	public static final String PRINCIPAL_TYPE="role";
 	private int id;
 	private String name;

@@ -4,7 +4,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.inject.Inject;
+import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,7 +22,7 @@ import com.zhongtian.datascene.basic.util.BasicSysKitUtil;
 @Service("menuResService")
 public class MenuResServiceImpl implements IMenuResService {
 	
-	@Inject
+	@Resource
 	private IMenuResDao menuResDao;
 
 	@Override
@@ -80,6 +80,16 @@ public class MenuResServiceImpl implements IMenuResService {
 		}
 	}
 
+	@Override
+	public List<MenuResEntity> listByRoleId(Integer rid) {
+		return menuResDao.listByRoleId(rid);
+	}
+
+	@Override
+	public List<MenuResEntity> listByUserId(Integer uid) {
+		return menuResDao.listByUserId(uid);
+	}
+	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void addModelMenu(MenuResEntity pmr, Class c) {
 		String path = null;

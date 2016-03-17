@@ -16,7 +16,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import com.zhongtian.datascene.auth.dto.LeftMenuDto;
-import com.zhongtian.datascene.auth.service.IControllerResService;
 import com.zhongtian.datascene.auth.service.IMenuResService;
 import com.zhongtian.datascene.auth.vo.MenuResEntity;
 import com.zhongtian.datascene.sys.init.IInitService;
@@ -28,8 +27,6 @@ import com.zhongtian.datascene.sys.web.context.BeanFactoryContext;
 public class TestInitService {
 	@Inject
 	private IInitService initService;
-	@Inject
-	private IControllerResService controllerResService;
 	@Inject
 	private IMenuResService menuResService;
 	
@@ -50,11 +47,6 @@ public class TestInitService {
 		Session s = holder.getSession(); 
 		s.flush();
 		TransactionSynchronizationManager.unbindResource(sessionFactory);
-	}
-	
-	@Test
-	public void testInitRes() {
-		controllerResService.addInitControllerRes(new String[]{"com.zhongtian.datascene.auth.web.controller"});
 	}
 	
 	@Test

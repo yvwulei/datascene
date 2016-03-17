@@ -15,7 +15,7 @@ import javax.persistence.Table;
  */
 @Table(name="t_menu_res")
 @Entity
-public class MenuResEntity implements SystemResources,Comparable<MenuResEntity> {
+public class MenuResEntity implements Comparable<MenuResEntity> {
 	public static final String RES_TYPE="menu";
 	private int id;
 	/**
